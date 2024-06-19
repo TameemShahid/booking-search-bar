@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
+    />
+    <style>
+      body {
+        font-family: 'Open Sans', sans-serif;
+      }
+
+      .search-bar-container {
+        width: 100%;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+      }
+
+      .searchBar {
+        width: 100%;
+        max-width: fit-content;
+
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+
+        border-radius: 16px;
+        box-shadow: #1ba2d4 0px 0px 0px 4px;
+
+        padding: 0 0 10px 0;
+      }
+
+      .heading-container {
+        width: 100%;
+        display: flex;
+        flex-flow: wrap;
+        align-content: center;
+        justify-content: center;
+
+        background-color: rgb(255, 255, 255);
+        border-radius: 16px 16px 0px 0px;
+        border-bottom: 1px solid rgb(234, 234, 235);
+
+        padding: 12px;
+      }
+
+      .heading-container > span {
+        font-size: large;
+        font-weight: bold;
+        color: gray;
+      }
+
+      .option-container {
+        gap: 8px;
+        width: 100%;
+        padding: 16px;
+        display: flex;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: center;
+      }
+
+      .input-field {
+        -webkit-box-align: center;
+        align-items: center;
+        background-color: rgb(245, 245, 245);
+        border-radius: 8px;
+        border: 0px;
+        display: grid;
+        grid-auto-columns: auto;
+        grid-auto-flow: column;
+        grid-template-columns: 1fr;
+        margin: 0px;
+        min-height: 56px;
+        padding: 0px;
+        position: relative;
+        width: 100%;
+      }
+
+      .input-wrapper {
+        width: 100%;
+        display: flex;
+        border-radius: 8px;
+        align-content: center;
+      }
+
+      .input-container {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        background-color: transparent;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        height: 56px;
+        -webkit-box-pack: center;
+        justify-content: center;
+        position: relative;
+        width: 100%;
+      }
+
+      .input-container:focus-within {
+        box-shadow: rgb(60, 60, 60) 0px 0px 0px 2px inset;
+      }
+
+      .separator {
+        background-color: rgb(186, 186, 192);
+        height: 32px;
+        margin: auto;
+        min-width: 1px;
+        max-width: 1px;
+      }
+
+      .input-container > label {
+        color: #74747c;
+        cursor: pointer;
+        display: block;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 20px;
+        margin: 0px;
+        transition: color 0.2s ease 0s;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        -webkit-tap-highlight-color: transparent;
+        padding: 6px 16px 0px;
+      }
+
+      .input-container > input {
+        background: transparent;
+        border: none;
+        color: rgb(60, 60, 60);
+        cursor: pointer;
+        display: block;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        height: unset;
+        line-height: 24px;
+        margin: 0px;
+        outline: none;
+        padding: 0px 36px 6px 16px;
+        position: relative;
+        text-align: left;
+        text-overflow: ellipsis;
+        transition: box-shadow 0.2s ease 0s;
+        width: 100%;
+        min-width: fit-content;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      fieldset > button {
+        -webkit-box-align: center;
+        align-items: center;
+        background: #1ba2d4;
+        border-radius: 4px;
+        border: none;
+        box-shadow: rgb(0, 113, 194) 0px 0px 0px 0px inset;
+        color: rgb(255, 255, 255);
+        cursor: pointer;
+        display: flex;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        height: 100%;
+        line-height: 56px;
+        -webkit-box-pack: center;
+        justify-content: center;
+        outline: none;
+        padding: 0px;
+        transition: all 0.2s ease 0s;
+        width: 100%;
+      }
+
+      fieldset > button:hover {
+        color: rgb(255, 255, 255);
+        background: rgb(0, 92, 157);
+        box-shadow: rgb(0, 92, 157) 0px 0px 0px 0px inset;
+        transition: all 0.2s ease 0s;
+      }
+
+      .date-wrapper {
+        position: absolute;
+        overflow: visible;
+        width: 100%;
+        min-width: 728px;
+        background: rgb(255, 255, 255);
+        border-radius: 8px;
+        box-shadow: rgba(0, 0, 0, 0.04) 0px 24px 32px,
+          rgba(0, 0, 0, 0.04) 0px 16px 24px, rgba(0, 0, 0, 0.04) 0px 4px 8px,
+          rgba(0, 0, 0, 0.04) 0px 0px 10px;
+        margin-top: 4px;
+        transform: translateZ(0px);
+        z-index: 2000;
+        top: 56px;
+        display: none;
+      }
+
+      .date-wrapper > .buttons-wrapper {
+        display: flex;
+        flex-wrap: nowrap;
+        align-content: center;
+        justify-content: center;
+
+        margin: 16px 16px 16px 0px;
+      }
+
+      .date-wrapper .buttons-wrapper > .button-container {
+        background: rgb(245, 245, 245);
+        border-radius: 12px;
+        display: grid;
+        grid-template-columns: auto auto;
+        padding: 4px;
+        column-gap: 4px;
+      }
+
+      .date-wrapper .buttons-wrapper .button-container > .active-button {
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        height: 28px;
+        background: rgb(255, 255, 255);
+        border-radius: 8px;
+        box-shadow: rgba(0, 0, 0, 0.04) 0px 0px 8px,
+          rgba(0, 0, 0, 0.06) 0px 0px 2px, rgba(0, 0, 0, 0.04) 0px 0px 1px;
+        color: rgb(0, 113, 194);
+        padding: 4px 16px;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .date-wrapper .buttons-wrapper .button-container > .nonactive-button {
+        display: flex;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        height: 28px;
+        background: transparent;
+        border-radius: 8px;
+        box-shadow: none;
+        color: rgb(60, 60, 60);
+        padding: 4px 16px;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+        font-weight: 400;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .date-wrapper .date-container {
+        padding: 12px 0px;
+        width: 664px;
+        margin: 0px 32px 12px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .date-wrapper .date-container > .buttons-container {
+        margin-top: 4px;
+        position: absolute;
+        width: 91.5%;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .date-wrapper .date-container .buttons-container > .back-button {
+        -webkit-box-align: center;
+        align-items: center;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        outline: none;
+        padding: 0px;
+        border-radius: 50%;
+        z-index: 1;
+        left: 0px;
+      }
+
+      .date-wrapper .date-container .buttons-container > .forward-button {
+        -webkit-box-align: center;
+        align-items: center;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        outline: none;
+        padding: 0px;
+        border-radius: 50%;
+        z-index: 1;
+        right: 0px;
+      }
+
+      .date-wrapper .date-container .buttons-container button > svg {
+        border-radius: 50%;
+        color: rgb(60, 60, 60);
+        height: 32px;
+        transition: background-color 0.2s ease 0s;
+        width: 32px;
+        color: rgb(186, 186, 192);
+      }
+
+      .date-wrapper .date-container .date-inner-container > .date-box {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        position: relative;
+        width: 50%;
+      }
+
+      .date-wrapper .date-container .date-box > span {
+        color: rgb(60, 60, 60);
+        display: block;
+        height: 40px;
+        line-height: 40px;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        text-align: center;
+        text-transform: none;
+      }
+
+      .date-wrapper .date-container .date-inner-container {
+        width: 100%;
+        display: flex;
+        flex-wrap: nowrap;
+      }
+
+      .date-inner-container .date-box > .days-container {
+        display: grid;
+        grid-auto-rows: 44px;
+        grid-template-columns: repeat(7, 44px);
+        -webkit-box-pack: center;
+        justify-content: center;
+        line-height: 44px;
+        border-bottom: 1px solid transparent;
+      }
+
+      .date-inner-container .date-box .days-container > .day-option {
+        display: flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        align-items: center;
+        font-family: 'Open Sans', sans-serif;
+        font-weight: 400;
+        font-size: 12px;
+        text-transform: capitalize;
+        color: rgb(140, 140, 146);
+        cursor: default;
+      }
+
+      .date-inner-container .date-box > .date-selector {
+        display: grid;
+        grid-auto-rows: 44px;
+        grid-template-columns: repeat(7, 44px);
+        row-gap: 4px;
+        -webkit-box-pack: center;
+        justify-content: center;
+      }
+
+      .date-inner-container .date-box .date-selector .date {
+        position: relative;
+        -moz-box-align: center;
+        align-items: center;
+        border: medium;
+        margin: 0px;
+        cursor: pointer;
+        display: flex;
+        font-family: Open Sans, sans-serif;
+        font-size: 14px;
+        -moz-box-pack: center;
+        justify-content: center;
+        color: rgb(60, 60, 60);
+        background: rgb(255, 255, 255);
+        font-weight: 400;
+      }
+
+      .date-inner-container .date-box .date-selector .date:disabled {
+        color: grey;
+        cursor: default;
+      }
+
+      .date-inner-container
+        .date-box
+        .date-selector
+        .date:hover:not(:disabled) {
+        border: 1px solid #0071c2;
+        border-radius: 50%;
+      }
+
+      #next-month svg,
+      #prev-month svg {
+        color: #3c3c3c;
+      }
+
+      .date-inner-container .date-box .date-selector .selection-start {
+        position: relative;
+        -webkit-box-align: center;
+        align-items: center;
+        border: none;
+        margin: 0px;
+        cursor: pointer;
+        display: flex;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-tap-highlight-color: transparent;
+        color: rgb(0, 113, 194);
+        background: rgba(0, 113, 194, 0.125);
+        font-weight: 400;
+        border-top-left-radius: 50%;
+        border-bottom-left-radius: 50%;
+      }
+
+      .date-inner-container .date-box .date-selector .selection-hover {
+        position: relative;
+        -webkit-box-align: center;
+        align-items: center;
+        border: none;
+        margin: 0px;
+        cursor: pointer;
+        display: flex;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-tap-highlight-color: transparent;
+        color: rgb(0, 113, 194);
+        background: rgba(0, 113, 194, 0.125);
+        font-weight: 400;
+      }
+
+      .date-inner-container .date-box .date-selector .selection-end {
+        position: relative;
+        -webkit-box-align: center;
+        align-items: center;
+        border: none;
+        margin: 0px;
+        cursor: pointer;
+        display: flex;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 14px;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-tap-highlight-color: transparent;
+        color: rgb(0, 113, 194);
+        background: rgba(0, 113, 194, 0.125);
+        font-weight: 400;
+        border-top-right-radius: 50%;
+        border-bottom-right-radius: 50%;
+      }
+
+      /* MEDIA QUERIES */
+      @media screen and (max-width: 768px) {
+        .option-container {
+          display: flex;
+          flex-wrap: wrap;
+        }
+      }
+
+      @media screen and (max-width) {
+      }
+    </style>
+  </head>
+  <body>
+    <div class="search-bar-container">
+      <div id="searchBar" class="searchBar">
+        <div class="heading-container">
+          <span>
+            <img
+              src="./sun-umbrella.png"
+              width="25px"
+              height="25px"
+              alt=""
+              srcset=""
+              style="margin-right: 8px; padding-top: 5px"
+            />
+            Plan your Trip!
+          </span>
+        </div>
+        <div class="option-container">
+          <fieldset id="cities-fields" class="input-field">
+            <div class="input-wrapper">
+              <div class="input-container">
+                <label for="departure">Departure</label>
+                <input
+                  type="text"
+                  id="departure"
+                  name="departure"
+                  placeholder="City or airport"
+                />
+              </div>
+              <div role="separator" class="separator"></div>
+              <div class="input-container">
+                <label for="departure">Destination</label>
+                <input
+                  type="text"
+                  id="destination"
+                  name="destination"
+                  placeholder="Where do you want to go?"
+                />
+              </div>
+            </div>
+          </fieldset>
+          <fieldset class="input-field">
+            <div class="input-wrapper">
+              <div class="input-container">
+                <label for="leavingOn">Leaving on</label>
+                <input
+                  type="type"
+                  id="leavingOn"
+                  name="leavingOn"
+                  placeholder="Date of departure"
+                />
+              </div>
+              <div role="separator" class="separator"></div>
+              <div class="input-container">
+                <label for="returningOn">Returning on</label>
+                <input
+                  type="type"
+                  id="returningOn"
+                  name="returningOn"
+                  placeholder="Date of return"
+                />
+              </div>
+              <div class="date-wrapper">
+                <div class="buttons-wrapper">
+                  <div class="button-container">
+                    <button type="button" id="exactDate" class="active-button">
+                      Exact Dates
+                    </button>
+                    <button
+                      type="button"
+                      id="flexibleDate"
+                      class="nonactive-button"
+                    >
+                      Flexible Dates
+                    </button>
+                  </div>
+                </div>
+                <div class="date-container" style="padding: 12px 0px">
+                  <div class="buttons-container">
+                    <button
+                      aria-label="Previous month"
+                      disabled=""
+                      tabindex="-1"
+                      type="button"
+                      class="back-button"
+                      id="prev-month"
+                    >
+                      <svg
+                        viewBox="0 -5 6 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        stroke-width="0"
+                        fill="currentColor"
+                        width="1em"
+                        height="1em"
+                        style="rotate: 180deg"
+                        id="prev-month-svg"
+                      >
+                        <path
+                          d="M0.0771484 12.4873L1.25715 13.6673L7.92381 7.00065L1.25715 0.333984L0.0771484 1.51398L5.56381 7.00065L0.0771484 12.4873Z"
+                        ></path>
+                      </svg>
+                    </button>
+                    <button
+                      aria-label="Next month"
+                      tabindex="-1"
+                      type="button"
+                      class="forward-button"
+                      id="next-month"
+                    >
+                      <svg
+                        viewBox="0 -5 6 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                        stroke-width="0"
+                        fill="currentColor"
+                        width="1em"
+                        height="1em"
+                      >
+                        <path
+                          d="M0.0771484 12.4873L1.25715 13.6673L7.92381 7.00065L1.25715 0.333984L0.0771484 1.51398L5.56381 7.00065L0.0771484 12.4873Z"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                  <input
+                    id="startDate"
+                    type="hidden"
+                    name="startDate"
+                    value=""
+                  />
+                  <input id="endDate" type="hidden" name="endDate" value="" />
+                  <input
+                    type="checkbox"
+                    name="selection-status"
+                    id="selection-status"
+                  />
+                  <div class="date-inner-container">
+                    <div class="date-box">
+                      <span id="month-1"></span>
+                      <div class="days-container">
+                        <span class="day-option">Mo</span>
+                        <span class="day-option">Tu</span>
+                        <span class="day-option">We</span>
+                        <span class="day-option">Th</span>
+                        <span class="day-option">Fr</span>
+                        <span class="day-option">Sa</span>
+                        <span class="day-option">Su</span>
+                      </div>
+                      <div id="date-selector-1" class="date-selector"></div>
+                    </div>
+                    <div class="date-box">
+                      <span id="month-2"></span>
+                      <div class="days-container">
+                        <span class="day-option">Mon</span>
+                        <span class="day-option">Tu</span>
+                        <span class="day-option">We</span>
+                        <span class="day-option">Th</span>
+                        <span class="day-option">Fr</span>
+                        <span class="day-option">Sa</span>
+                        <span class="day-option">Su</span>
+                      </div>
+                      <div id="date-selector-2" class="date-selector"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+          <fieldset class="input-field">
+            <div class="input-wrapper">
+              <div class="input-container">
+                <label for="travellers">Travellers and flight class</label>
+                <input
+                  type="type"
+                  id="travellers"
+                  name="travellers"
+                  placeholder="Date of departure"
+                />
+              </div>
+            </div>
+          </fieldset>
+          <fieldset class="input-field" style="max-width: 56px">
+            <button type="button" style="min-height: 56px">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="30"
+                height="30"
+                fill="currentColor"
+                class="my-auto"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="m9.77 12.11 4.012-2.953a.647.647 0 0 0 0-1.114L9.771 5.09a.644.644 0 0 0-.971.557V6.65H2v3.9h6.8v1.003c0 .505.545.808.97.557"
+                />
+              </svg>
+            </button>
+          </fieldset>
+        </div>
+      </div>
+    </div>
+    <script src="./index.js"></script>
+  </body>
+</html>
