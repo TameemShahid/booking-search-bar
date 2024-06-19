@@ -494,9 +494,57 @@
           display: flex;
           flex-wrap: wrap;
         }
+
+        #cities-fields {
+          display: none;
+        }
+
+        #search-button {
+          max-width: 100% !important;
+        }
+
+        .date-wrapper {
+          max-width: 100%;
+        }
       }
 
-      @media screen and (max-width) {
+      @media screen and (max-width: 425px) {
+        .date-wrapper {
+          min-width: 0px !important;
+        }
+
+        .date-container {
+          width: 100% !important;
+          margin: 0px !important;
+        }
+
+        .buttons-wrapper {
+          margin: 16px !important;
+        }
+
+        .buttons-container {
+          position: relative !important;
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .date-box {
+          width: 100% !important;
+        }
+
+        .date-box-month-2 {
+          display: none !important;
+        }
+      }
+
+      @media screen and (min-width: 769px) {
+        #cities-fields-mobile-departure {
+          display: none;
+        }
+
+        #cities-fields-mobile-destination {
+          display: none;
+        }
       }
     </style>
   </head>
@@ -529,6 +577,32 @@
                 />
               </div>
               <div role="separator" class="separator"></div>
+              <div class="input-container">
+                <label for="departure">Destination</label>
+                <input
+                  type="text"
+                  id="destination"
+                  name="destination"
+                  placeholder="Where do you want to go?"
+                />
+              </div>
+            </div>
+          </fieldset>
+          <fieldset id="cities-fields-mobile-departure" class="input-field">
+            <div class="input-wrapper">
+              <div class="input-container">
+                <label for="departure">Departure</label>
+                <input
+                  type="text"
+                  id="departure"
+                  name="departure"
+                  placeholder="City or airport"
+                />
+              </div>
+            </div>
+          </fieldset>
+          <fieldset id="cities-fields-mobile-destination" class="input-field">
+            <div class="input-wrapper">
               <div class="input-container">
                 <label for="departure">Destination</label>
                 <input
@@ -629,11 +703,6 @@
                     value=""
                   />
                   <input id="endDate" type="hidden" name="endDate" value="" />
-                  <input
-                    type="checkbox"
-                    name="selection-status"
-                    id="selection-status"
-                  />
                   <div class="date-inner-container">
                     <div class="date-box">
                       <span id="month-1"></span>
@@ -648,7 +717,7 @@
                       </div>
                       <div id="date-selector-1" class="date-selector"></div>
                     </div>
-                    <div class="date-box">
+                    <div class="date-box date-box-month-2">
                       <span id="month-2"></span>
                       <div class="days-container">
                         <span class="day-option">Mon</span>
@@ -679,7 +748,11 @@
               </div>
             </div>
           </fieldset>
-          <fieldset class="input-field" style="max-width: 56px">
+          <fieldset
+            id="search-button"
+            class="input-field"
+            style="max-width: 56px"
+          >
             <button type="button" style="min-height: 56px">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
